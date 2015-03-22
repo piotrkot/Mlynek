@@ -10,7 +10,7 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class AvailableItemsHealthCheck extends HealthCheck {
+public final class AvailableItemsHealthCheck extends HealthCheck {
     /**
      * Memory store
      */

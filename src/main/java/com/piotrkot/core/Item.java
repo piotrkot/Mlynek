@@ -6,7 +6,7 @@ import lombok.Value;
  * Shopping item.
  */
 @Value
-public class Item {
+public final class Item {
     /**
      * Name of the item.
      */

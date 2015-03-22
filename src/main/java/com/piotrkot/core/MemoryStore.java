@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Memory store. Stateful object.
  */
-public class MemoryStore {
+public final class MemoryStore {
     /**
      * Items as a map.
      */

@@ -2,7 +2,7 @@ package com.piotrkot.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.piotrkot.core.MemoryStore;
-import com.piotrkot.core.Orders;
+import com.piotrkot.core.Order;
 import com.piotrkot.views.BuyView;
 import com.piotrkot.views.ShopView;
 import lombok.Synchronized;
@@ -42,6 +42,6 @@ public class ShopResource {
     @Produces(MediaType.TEXT_HTML)
     public BuyView buyView(@PathParam("orders") final String ords) {
         return new BuyView(BuyView.Template.MUSTACHE,
-            new Orders(new PathOrders(ords), this.store).items());
+            new Order(new PathOrder(ords), this.store).boughtItems());
     }
 }

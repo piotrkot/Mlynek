@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Shop main configuration.
  */
-public class ShopConfiguration extends Configuration {
+public final class ShopConfiguration extends Configuration {
     /**
      * Items.
      */

@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * Shop view.
  */
-public class ShopView extends View {
+public final class ShopView extends View {
     /**
      * Read only items.
      */

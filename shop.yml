@@ -2,6 +2,9 @@ server:
   applicationConnectors:
     - type: http
       port: 8090
+  adminConnectors:
+    - type: http
+      port: 8444
 
 items:
   A: 20

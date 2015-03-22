@@ -12,7 +12,7 @@ import io.dropwizard.views.ViewBundle;
 /**
  * Shop application.
  */
-public class ShopApplication extends Application<ShopConfiguration> {
+public final class ShopApplication extends Application<ShopConfiguration> {
     public static void main(final String[] args) throws Exception {
         new ShopApplication().run(args);
     }
