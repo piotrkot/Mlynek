@@ -1,10 +1,10 @@
 Shop - programming task
 
 1. Technology choice
- a. Frontend - Bootstrap as the popular front-end framework. Mustache templating
+    * Frontend - Bootstrap as the popular front-end framework. Mustache templating
   system being default from Dropwizard. Additionally little custom Javascript/JQuery
   for customization.
- b. Backend - Dropwizard as the easy and light-weight Java framework. It is very simple
+    * Backend - Dropwizard as the easy and light-weight Java framework. It is very simple
   to get started. Provides all I need for the task with no deployment and easily debuggable
   and testable.
 2. For the persistence layer I would go for the JDBI library. It is a convenient way
