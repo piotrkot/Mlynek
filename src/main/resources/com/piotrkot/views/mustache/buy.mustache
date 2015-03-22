@@ -1,0 +1,21 @@
+{{> header }}
+
+<h4>You just bought:</h4>
+<div class="form-horizontal">
+{{#items}}
+  <div class="row">
+    <label for="bought{{name}}" class="control-label col-sm-2">Item {{name}}:</label>
+    <div class="col-sm-10">
+      <label id="bought{{name}}" class="control-label">{{count}}</label>
+    </div>
+  </div>
+{{/items}}
+{{^items}}
+Nothing, try again.
+{{/items}}
+</div>
+<div>
+  <a class="btn btn-large btn-info" href="/shop">Buy more</a>
+</div>
+
+{{> footer }}

@@ -1,0 +1,35 @@
+{{> header }}
+
+<h4>Currently available in our shop:</h4>
+<div class="form-horizontal">
+{{#items}}
+  <div class="row">
+    <label for="avail{{name}}" class="control-label col-sm-2">Item {{name}}:</label>
+    <div class="col-sm-10">
+      <label id="avail{{name}}" class="control-label">{{count}}</label>
+    </div>
+  </div>
+{{/items}}
+{{^items}}
+Sorry, no items.
+{{/items}}
+</div>
+
+<h4>Your shopping:</h4>
+<form class="form-horizontal" id="buying-form" action="/shop/" method="GET">
+  <div class="form-group" id="buying">
+{{#items}}
+    <label for="{{name}}" class="col-sm-2 control-label">Item {{name}}</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" placeholder="Amount" id="{{name}}">
+    </div>
+{{/items}}
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="buy" type="submit" class="btn btn-primary">Buy</button>
+    </div>
+  </div>
+</form>
+
+{{> footer }}
