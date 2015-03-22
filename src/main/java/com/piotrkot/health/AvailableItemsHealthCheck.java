@@ -20,7 +20,6 @@ public final class AvailableItemsHealthCheck extends HealthCheck {
     protected Result check() throws Exception {
         if (this.store.empty()) {
             return Result.unhealthy("No available items");
-
         }
         return Result.healthy();
     }

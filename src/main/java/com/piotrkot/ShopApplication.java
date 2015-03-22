@@ -30,9 +30,10 @@ public final class ShopApplication extends Application<ShopConfiguration> {
     }
 
     @Override
-    public void run(final ShopConfiguration shopConfiguration, final Environment environment) throws Exception {
-        final MemoryStore items = new MemoryStore(shopConfiguration.getItems());
+    public void run(final ShopConfiguration configuration, final Environment environment) {
+        final MemoryStore items = new MemoryStore(configuration.getItems());
         environment.jersey().register(new ShopResource(items));
-        environment.healthChecks().register("itemsAvailable", new AvailableItemsHealthCheck(items));
+        environment.healthChecks().register("itemsAvailable",
+            new AvailableItemsHealthCheck(items));
     }
 }

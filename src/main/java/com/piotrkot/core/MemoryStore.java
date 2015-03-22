@@ -2,6 +2,7 @@ package com.piotrkot.core;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import lombok.Synchronized;
 
 import javax.annotation.Nullable;
@@ -17,7 +18,7 @@ public final class MemoryStore {
     private volatile Map<String, Integer> map;
 
     public MemoryStore(final Map<String, Integer> items) {
-        this.map = items;
+        this.map = Maps.newHashMap(items);
     }
 
     /**
@@ -31,7 +32,7 @@ public final class MemoryStore {
             new Function<Map.Entry<String, Integer>, Item>() {
                 @Nullable
                 @Override
-                public Item apply(Map.Entry<String, Integer> item) {
+                public Item apply(final Map.Entry<String, Integer> item) {
                     return new Item(item.getKey(), item.getValue());
                 }
             });
@@ -44,7 +45,7 @@ public final class MemoryStore {
      */
     @Synchronized
     public void sell(final Iterable<Item> items) {
-        for (Item item : items) {
+        for (final Item item : items) {
             if (this.canSell(item)) {
                 final Integer value = this.map.get(item.getName()) - item.getCount();
                 if (value == 0) {

@@ -17,7 +17,7 @@ public final class PathOrder {
     /**
      * Valid items.
      */
-    private Iterable<Item> items;
+    private final Iterable<Item> items;
 
     public PathOrder(final String orders) {
         this.items = Iterables.transform(this.filterPositive(
@@ -25,7 +25,7 @@ public final class PathOrder {
             new Function<Map.Entry<String, Integer>, Item>() {
                 @Nullable
                 @Override
-                public Item apply(Map.Entry<String, Integer> item) {
+                public Item apply(final Map.Entry<String, Integer> item) {
                     return new Item(item.getKey(), item.getValue());
                 }
             });
@@ -37,7 +37,7 @@ public final class PathOrder {
      * @param order Path params for order.
      * @return Map of path param item name and path param item count pairs.
      */
-    private Map<String, String> split(final String order) {
+    private Map<String, String> split(final CharSequence order) {
         return Splitter.on("&").omitEmptyStrings().
             withKeyValueSeparator("=").split(order);
     }
@@ -53,7 +53,7 @@ public final class PathOrder {
         return Maps.transformEntries(order,
             new Maps.EntryTransformer<String, String, Integer>() {
                 @Override
-                public Integer transformEntry(String key, String value) {
+                public Integer transformEntry(final String key, final String value) {
                     try {
                         return Integer.parseInt(value);
                     } catch (NumberFormatException e) {
@@ -72,7 +72,7 @@ public final class PathOrder {
     private Map<String, Integer> filterPositive(final Map<String, Integer> order) {
         return Maps.filterValues(order, new Predicate<Integer>() {
             @Override
-            public boolean apply(@Nullable Integer integer) {
+            public boolean apply(@Nullable final Integer integer) {
                 return integer != null && integer > 0;
             }
         });

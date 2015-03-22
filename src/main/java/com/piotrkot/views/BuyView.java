@@ -19,13 +19,13 @@ public final class BuyView extends View {
         @Getter
         private final String template;
 
-        private Template(String template) {
-            this.template = template;
+        Template(final String templ) {
+            this.template = templ;
         }
     }
 
-    public BuyView(final Template template, final Iterable<Item> items) {
+    public BuyView(final Template template, final Iterable<Item> bought) {
         super(template.getTemplate());
-        this.items = items;
+        this.items = bought;
     }
 }

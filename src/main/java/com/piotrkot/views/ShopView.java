@@ -19,13 +19,13 @@ public final class ShopView extends View {
         @Getter
         private final String template;
 
-        private Template(String template) {
-            this.template = template;
+        Template(final String templ) {
+            this.template = templ;
         }
     }
-    
-    public ShopView(final Template template, final Iterable<Item> items) {
+
+    public ShopView(final Template template, final Iterable<Item> available) {
         super(template.getTemplate());
-        this.items = items;
+        this.items = available;
     }
 }

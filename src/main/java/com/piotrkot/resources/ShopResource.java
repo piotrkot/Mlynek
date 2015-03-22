@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/shop")
 @Value
 @Slf4j
-public class ShopResource {
+public final class ShopResource {
     /**
      * Transactional memory store.
      */
