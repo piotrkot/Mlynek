@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
- * Path order.
+ * Order as path parameters.
  */
 public final class PathOrder {
     /**
@@ -56,7 +56,7 @@ public final class PathOrder {
                 public Integer transformEntry(final String key, final String value) {
                     try {
                         return Integer.parseInt(value);
-                    } catch (NumberFormatException e) {
+                    } catch (final NumberFormatException ignore) {
                         return 0;
                     }
                 }
@@ -81,7 +81,7 @@ public final class PathOrder {
     /**
      * Valid items
      *
-     * @return Read-only valid items.
+     * @return Iterable valid items.
      */
     public Iterable<Item> validItems() {
         return this.items;
