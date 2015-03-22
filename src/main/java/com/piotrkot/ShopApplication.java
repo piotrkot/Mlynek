@@ -33,6 +33,6 @@ public class ShopApplication extends Application<ShopConfiguration> {
     public void run(final ShopConfiguration shopConfiguration, final Environment environment) throws Exception {
         final MemoryStore items = new MemoryStore(shopConfiguration.getItems());
         environment.jersey().register(new ShopResource(items));
-        environment.healthChecks().register("noOpenRequests", new AvailableItemsHealthCheck(items));
+        environment.healthChecks().register("itemsAvailable", new AvailableItemsHealthCheck(items));
     }
 }
