@@ -16,10 +16,12 @@ import lombok.Value;
 public final class Item {
     /**
      * Name of the item.
+     * @checkstyle VisibilityModifierCheck (2 lines)
      */
     String name;
     /**
      * Amount of the item.
+     * @checkstyle VisibilityModifierCheck (2 lines)
      */
     Integer count;
 }

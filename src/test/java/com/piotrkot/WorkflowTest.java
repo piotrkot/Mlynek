@@ -4,13 +4,12 @@
 package com.piotrkot;
 
 import com.google.common.base.Joiner;
-import com.google.common.io.ByteStreams;
+import com.google.common.collect.Range;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -30,20 +29,21 @@ public final class WorkflowTest {
         new DropwizardAppRule<>(ShopApplication.class, "shop-test.yml");
 
     /**
-     * Root URI for the application.
+     * HTTP minimum OK status.
      */
-    private String root;
+    private static final int OK_MIN = 200;
+    /**
+     * HTTP maximum OK status.
+     */
+    private static final int OK_MAX = 299;
 
     /**
-     * Each test setup.
+     * Root URI for the application.
      */
-    @Before
-    public void setup() {
-        this.root = String.format(
-            "http://localhost:%d/shop",
-            WorkflowTest.APP_RULE.getLocalPort()
-        );
-    }
+    private final String root = String.format(
+        "http://localhost:%d/shop",
+        WorkflowTest.APP_RULE.getLocalPort()
+    );
 
     /**
      * Main page workflow.
@@ -62,8 +62,11 @@ public final class WorkflowTest {
         final HttpResponse response = Request.Get(this.root).execute()
             .returnResponse();
         final int status = response.getStatusLine().getStatusCode();
-        ByteStreams.copy(response.getEntity().getContent(), System.out);
-        Assert.assertTrue(status >= 200 && status < 300);
+        Assert.assertTrue(
+            "main page error",
+            Range.closed(WorkflowTest.OK_MIN, WorkflowTest.OK_MAX)
+                .contains(status)
+        );
     }
 
     /**
@@ -75,7 +78,10 @@ public final class WorkflowTest {
             Joiner.on("").join(this.root, "/A=10&B=3")
         ).execute().returnResponse();
         final int status = response.getStatusLine().getStatusCode();
-        ByteStreams.copy(response.getEntity().getContent(), System.out);
-        Assert.assertTrue(status >= 200 && status < 300);
+        Assert.assertTrue(
+            "buy page error",
+            Range.closed(WorkflowTest.OK_MIN, WorkflowTest.OK_MAX)
+                .contains(status)
+        );
     }
 }

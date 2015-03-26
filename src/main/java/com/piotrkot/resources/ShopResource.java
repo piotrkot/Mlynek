@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class ShopResource {
     /**
      * Transactional memory store.
+     * @checkstyle VisibilityModifierCheck (2 lines)
      */
     MemoryStore store;
 

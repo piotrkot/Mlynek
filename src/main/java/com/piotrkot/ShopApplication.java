@@ -11,6 +11,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import lombok.SneakyThrows;
 
 /**
  * Shop application.
@@ -24,9 +25,9 @@ public final class ShopApplication extends Application<ShopConfiguration> {
      * Main runnable method.
      *
      * @param args Arguments.
-     * @throws Exception When configured improperly.
      */
-    public static void main(final String[] args) throws Exception {
+    @SneakyThrows
+    public static void main(final String[] args) {
         new ShopApplication().run(args);
     }
 

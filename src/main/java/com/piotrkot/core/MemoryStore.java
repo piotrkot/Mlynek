@@ -21,7 +21,7 @@ public final class MemoryStore {
     /**
      * Items as a map.
      */
-    private volatile Map<String, Integer> map;
+    private final Map<String, Integer> map;
 
     /**
      * Class constructor.

@@ -30,9 +30,9 @@ public final class PathOrder {
      *
      * @param orders Path orders.
      */
-    public PathOrder(final String orders) {
+    public PathOrder(final CharSequence orders) {
         this.items = Iterables.transform(
-            this.filterPositive(this.parse(this.split(orders)))
+            PathOrder.filterPositive(PathOrder.parse(PathOrder.split(orders)))
                 .entrySet(),
             new Function<Map.Entry<String, Integer>, Item>() {
                 @Nullable
@@ -58,7 +58,7 @@ public final class PathOrder {
      * @param order Path params for order.
      * @return Map of path param item name and path param item count pairs.
      */
-    private Map<String, String> split(final CharSequence order) {
+    private static Map<String, String> split(final CharSequence order) {
         return Splitter.on("&").omitEmptyStrings()
             .withKeyValueSeparator("=").split(order);
     }
@@ -67,11 +67,11 @@ public final class PathOrder {
      * Parse order.
      *
      * @param order Order as path param item name and path param item
-     * count pairs.
+     *  count pairs.
      * @return Order with param values parsed to integers.
-     * When param value cannot be parsed, zero is returned.
+     *  When param value cannot be parsed, zero is returned.
      */
-    private Map<String, Integer> parse(final Map<String, String> order) {
+    private static Map<String, Integer> parse(final Map<String, String> order) {
         return Maps.transformEntries(
             order,
             new Maps.EntryTransformer<String, String, Integer>() {
@@ -91,10 +91,10 @@ public final class PathOrder {
      * Filter positive order amounts.
      *
      * @param order Order as path param item name and path param item
-     * count pairs.
+     *  count pairs.
      * @return Order with positive items' amounts.
      */
-    private Map<String, Integer> filterPositive(
+    private static Map<String, Integer> filterPositive(
         final Map<String, Integer> order) {
         return Maps.filterValues(
             order, new Predicate<Integer>() {

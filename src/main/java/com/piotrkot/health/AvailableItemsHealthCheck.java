@@ -20,6 +20,7 @@ import lombok.Value;
 public final class AvailableItemsHealthCheck extends HealthCheck {
     /**
      * Memory store.
+     * @checkstyle VisibilityModifierCheck (2 lines)
      */
     MemoryStore store;
 
