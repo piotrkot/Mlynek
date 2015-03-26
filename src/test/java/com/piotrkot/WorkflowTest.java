@@ -1,24 +1,32 @@
+/**
+ * Copyright (c) 2015. piotrkot
+ */
 package com.piotrkot;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 import io.dropwizard.testing.junit.DropwizardAppRule;
+import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertTrue;
-
 /**
  * Main Workflow tests.
+ *
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
+ * @version $Id$
+ * @since 1.0
  */
-public class WorkflowTest {
+public final class WorkflowTest {
+    /**
+     * Application Rule.
+     */
     @ClassRule
-    public static final DropwizardAppRule<ShopConfiguration> appRule =
+    public static final DropwizardAppRule<ShopConfiguration> APP_RULE =
         new DropwizardAppRule<>(ShopApplication.class, "shop-test.yml");
 
     /**
@@ -26,29 +34,48 @@ public class WorkflowTest {
      */
     private String root;
 
+    /**
+     * Each test setup.
+     */
     @Before
     public void setup() {
-        this.root = String.format("http://localhost:%d/shop", appRule.getLocalPort());
+        this.root = String.format(
+            "http://localhost:%d/shop",
+            WorkflowTest.APP_RULE.getLocalPort()
+        );
     }
 
+    /**
+     * Main page workflow.
+     */
     @Test
-    public void workflow() throws IOException {
-        checkShopPage();
-        checkBuyPage();
+    public void workflow() {
+        this.checkShopPage();
+        this.checkBuyPage();
     }
 
-    private void checkShopPage() throws IOException {
-        final HttpResponse response = Request.Get(this.root).execute().returnResponse();
-        final int statusCode = response.getStatusLine().getStatusCode();
+    /**
+     * Check of main page.
+     */
+    @SneakyThrows
+    private void checkShopPage() {
+        final HttpResponse response = Request.Get(this.root).execute()
+            .returnResponse();
+        final int status = response.getStatusLine().getStatusCode();
         ByteStreams.copy(response.getEntity().getContent(), System.out);
-        assertTrue((statusCode >= 200 && statusCode < 300));
+        Assert.assertTrue(status >= 200 && status < 300);
     }
 
-    private void checkBuyPage() throws IOException {
+    /**
+     * Check of buy page.
+     */
+    @SneakyThrows
+    private void checkBuyPage() {
         final HttpResponse response = Request.Get(
-            Joiner.on("").join(this.root, "/A=10&B=3")).execute().returnResponse();
-        final int statusCode = response.getStatusLine().getStatusCode();
+            Joiner.on("").join(this.root, "/A=10&B=3")
+        ).execute().returnResponse();
+        final int status = response.getStatusLine().getStatusCode();
         ByteStreams.copy(response.getEntity().getContent(), System.out);
-        assertTrue((statusCode >= 200 && statusCode < 300));
+        Assert.assertTrue(status >= 200 && status < 300);
     }
 }

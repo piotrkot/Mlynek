@@ -1,14 +1,20 @@
+/**
+ * Copyright (c) 2015. piotrkot
+ */
 package com.piotrkot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import lombok.Getter;
-
-import javax.validation.constraints.NotNull;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
 
 /**
  * Shop main configuration.
+ *
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
+ * @version $Id$
+ * @since 1.0
  */
 public final class ShopConfiguration extends Configuration {
     /**

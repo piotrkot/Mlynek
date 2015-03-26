@@ -1,15 +1,21 @@
+/**
+ * Copyright (c) 2015. piotrkot
+ */
 package com.piotrkot.core;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import lombok.Synchronized;
-
-import javax.annotation.Nullable;
 import java.util.Map;
+import javax.annotation.Nullable;
+import lombok.Synchronized;
 
 /**
  * Memory store. Stateful object.
+ *
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
+ * @version $Id$
+ * @since 1.0
  */
 public final class MemoryStore {
     /**
@@ -17,6 +23,11 @@ public final class MemoryStore {
      */
     private volatile Map<String, Integer> map;
 
+    /**
+     * Class constructor.
+     *
+     * @param items Items to be stored.
+     */
     public MemoryStore(final Map<String, Integer> items) {
         this.map = Maps.newHashMap(items);
     }
@@ -28,7 +39,8 @@ public final class MemoryStore {
      */
     @Synchronized
     public Iterable<Item> items() {
-        return Iterables.transform(this.map.entrySet(),
+        return Iterables.transform(
+            this.map.entrySet(),
             new Function<Map.Entry<String, Integer>, Item>() {
                 @Nullable
                 @Override
@@ -47,11 +59,15 @@ public final class MemoryStore {
     public void sell(final Iterable<Item> items) {
         for (final Item item : items) {
             if (this.canSell(item)) {
-                final Integer value = this.map.get(item.getName()) - item.getCount();
+                final Integer value = this.map.get(item.getName())
+                    - item.getCount();
                 if (value == 0) {
                     this.map.remove(item.getName());
                 } else {
-                    this.map.put(item.getName(), this.map.get(item.getName()) - item.getCount());
+                    this.map.put(
+                        item.getName(), this.map.get(item.getName())
+                            - item.getCount()
+                    );
                 }
             }
         }
@@ -61,15 +77,18 @@ public final class MemoryStore {
      * Test if item can be sold.
      *
      * @param item Item in question.
-     * @return True if item can be sold. False, otherwise.
+     * @return True If item can be sold. False, otherwise.
      */
     @Synchronized
     public boolean canSell(final Item item) {
-        return this.map.containsKey(item.getName()) && this.map.get(item.getName()) >= item.getCount();
+        return this.map.containsKey(item.getName())
+            && this.map.get(item.getName()) >= item.getCount();
     }
 
     /**
-     * @return true, if there is no items. False, otherwise.
+     * Test memory store.
+     *
+     * @return True, if there is no items. False, otherwise.
      */
     @Synchronized
     public boolean empty() {
