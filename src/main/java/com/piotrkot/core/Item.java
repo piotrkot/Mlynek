@@ -3,7 +3,8 @@
  */
 package com.piotrkot.core;
 
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /**
  * Shopping item.
@@ -12,16 +13,29 @@ import lombok.Value;
  * @version $Id$
  * @since 1.0
  */
-@Value
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.UnusedPrivateField",
+    "PMD.SingularField"})
+@EqualsAndHashCode
 public final class Item {
     /**
      * Name of the item.
-     * @checkstyle VisibilityModifierCheck (2 lines)
      */
-    String name;
+    @Getter
+    private final String name;
     /**
      * Amount of the item.
-     * @checkstyle VisibilityModifierCheck (2 lines)
      */
-    Integer count;
+    @Getter
+    private final int count;
+
+    /**
+     * Class constructor.
+     *
+     * @param label Item label.
+     * @param amount Item amount.
+     */
+    public Item(final String label, final int amount) {
+        this.name = label;
+        this.count = amount;
+    }
 }

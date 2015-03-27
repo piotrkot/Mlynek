@@ -16,6 +16,7 @@ import lombok.Getter;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings("PMD.UnusedPrivateField")
 public final class ShopConfiguration extends Configuration {
     /**
      * Items.

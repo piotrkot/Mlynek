@@ -14,6 +14,8 @@ import lombok.Getter;
  * @version $Id$
  * @since 1.0
  */
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.UnusedPrivateField"
+    , "PMD.SingularField"})
 public final class ShopView extends View {
     /**
      * Template location.

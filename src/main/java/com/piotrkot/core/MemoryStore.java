@@ -7,7 +7,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import java.util.Map;
-import javax.annotation.Nullable;
 import lombok.Synchronized;
 
 /**
@@ -21,7 +20,7 @@ public final class MemoryStore {
     /**
      * Items as a map.
      */
-    private final Map<String, Integer> map;
+    private final transient Map<String, Integer> map;
 
     /**
      * Class constructor.
@@ -42,7 +41,6 @@ public final class MemoryStore {
         return Iterables.transform(
             this.map.entrySet(),
             new Function<Map.Entry<String, Integer>, Item>() {
-                @Nullable
                 @Override
                 public Item apply(final Map.Entry<String, Integer> item) {
                     return new Item(item.getKey(), item.getValue());

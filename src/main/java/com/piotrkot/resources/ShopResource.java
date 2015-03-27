@@ -14,7 +14,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import lombok.Synchronized;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,15 +24,21 @@ import lombok.extern.slf4j.Slf4j;
  * @since 1.0
  */
 @Path("/shop")
-@Value
 @Slf4j
 public final class ShopResource {
     /**
      * Transactional memory store.
-     * @checkstyle VisibilityModifierCheck (2 lines)
      */
-    MemoryStore store;
+    private final transient MemoryStore store;
 
+    /**
+     * Class constructor.
+     *
+     * @param memory Memory.
+     */
+    public ShopResource(final MemoryStore memory) {
+        this.store = memory;
+    }
     /**
      * Main view.
      *

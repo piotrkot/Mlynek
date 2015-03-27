@@ -6,7 +6,6 @@ package com.piotrkot.health;
 import com.codahale.metrics.health.HealthCheck;
 import com.piotrkot.core.MemoryStore;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
 
 /**
  * Available Items Health Check.
@@ -15,20 +14,29 @@ import lombok.Value;
  * @version $Id$
  * @since 1.0
  */
-@Value
 @EqualsAndHashCode(callSuper = false)
 public final class AvailableItemsHealthCheck extends HealthCheck {
     /**
      * Memory store.
-     * @checkstyle VisibilityModifierCheck (2 lines)
      */
-    MemoryStore store;
+    private final transient MemoryStore store;
+
+    /**
+     * Class constructor.
+     *
+     * @param memory Store.
+     */
+    public AvailableItemsHealthCheck(final MemoryStore memory) {
+        super();
+        this.store = memory;
+    }
 
     @Override
     public Result check() throws Exception {
+        Result result = Result.healthy();
         if (this.store.empty()) {
-            return Result.unhealthy("No available items");
+            result = Result.unhealthy("No available items");
         }
-        return Result.healthy();
+        return result;
     }
 }

@@ -19,7 +19,7 @@ public final class Order {
     /**
      * Items to be realized with this order.
      */
-    private final Iterable<Item> items;
+    private final transient Iterable<Item> items;
 
     /**
      * Class constructor.

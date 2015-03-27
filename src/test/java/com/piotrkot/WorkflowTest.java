@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -40,26 +41,26 @@ public final class WorkflowTest {
     /**
      * Root URI for the application.
      */
-    private final String root = String.format(
-        "http://localhost:%d/shop",
-        WorkflowTest.APP_RULE.getLocalPort()
-    );
+    private transient String uri = "";
 
     /**
-     * Main page workflow.
+     * Test setup.
      */
-    @Test
-    public void workflow() {
-        this.checkShopPage();
-        this.checkBuyPage();
+    @Before
+    public void setUp() {
+        this.uri = String.format(
+            "http://localhost:%d/shop",
+            WorkflowTest.APP_RULE.getLocalPort()
+        );
     }
 
     /**
      * Check of main page.
      */
+    @Test
     @SneakyThrows
-    private void checkShopPage() {
-        final HttpResponse response = Request.Get(this.root).execute()
+    public void checkShopPage() {
+        final HttpResponse response = Request.Get(this.uri).execute()
             .returnResponse();
         final int status = response.getStatusLine().getStatusCode();
         Assert.assertTrue(
@@ -72,10 +73,11 @@ public final class WorkflowTest {
     /**
      * Check of buy page.
      */
+    @Test
     @SneakyThrows
-    private void checkBuyPage() {
+    public void checkBuyPage() {
         final HttpResponse response = Request.Get(
-            Joiner.on("").join(this.root, "/A=10&B=3")
+            Joiner.on("").join(this.uri, "/A=10&B=3")
         ).execute().returnResponse();
         final int status = response.getStatusLine().getStatusCode();
         Assert.assertTrue(

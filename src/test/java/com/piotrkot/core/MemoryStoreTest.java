@@ -5,10 +5,8 @@ package com.piotrkot.core;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -22,60 +20,26 @@ public final class MemoryStoreTest {
     /**
      * Item name for A.
      */
-    private static final String A = "A";
+    private static final String A_LABEL = "A";
     /**
      * Item name for B.
      */
-    private static final String B = "B";
-    /**
-     * Item name for C.
-     */
-    private static final String C = "C";
-    /**
-     * Map.
-     */
-    private final Map<String, Integer> map = new HashMap<>(2);
-    /**
-     * No A items.
-     */
-    private final Item anoitem = new Item(A, 0);
-    /**
-     * One A item.
-     */
-    private final Item aitem = new Item(A, 1);
-    /**
-     * Two A items.
-     */
-    private final Item aitems = new Item(A, 2);
-    /**
-     * One B item.
-     */
-    private final Item bitem = new Item(B, 1);
-    /**
-     * One C item.
-     */
-    private final Item citem = new Item(C, 1);
-
-    /**
-     * Each test setup.
-     */
-    @Before
-    public void setup() {
-        this.map.clear();
-        this.map.put(A, 1);
-        this.map.put(B, 1);
-    }
+    private static final String B_LABEL = "B";
 
     /**
      * Test items.
      */
     @Test
     public void testItems() {
+        final ConcurrentHashMap<String, Integer> map =
+            new ConcurrentHashMap<>(1);
+        map.put(A_LABEL, 1);
+        map.put(B_LABEL, 2);
         Assert.assertTrue(
             "wrong elements",
             Iterables.elementsEqual(
-                ImmutableList.of(this.aitem, this.bitem),
-                new MemoryStore(this.map).items()
+                ImmutableList.of(new Item(A_LABEL, 1), new Item(B_LABEL, 2)),
+                new MemoryStore(map).items()
             ));
     }
 
@@ -84,17 +48,22 @@ public final class MemoryStoreTest {
      */
     @Test
     public void testCanSell() {
+        final ConcurrentHashMap<String, Integer> map =
+            new ConcurrentHashMap<>(1);
+        map.put(A_LABEL, 1);
         Assert.assertTrue(
-            "cannot sell A", new MemoryStore(this.map).canSell(this.aitem)
+            "cannot sell A", new MemoryStore(map).canSell(new Item(A_LABEL, 1))
         );
         Assert.assertTrue(
-            "cannot sell no A", new MemoryStore(this.map).canSell(this.anoitem)
+            "cannot sell no A",
+            new MemoryStore(map).canSell(new Item(A_LABEL, 0))
         );
         Assert.assertFalse(
-            "can sell many A", new MemoryStore(this.map).canSell(this.aitems)
+            "can sell more A than exist",
+            new MemoryStore(map).canSell(new Item(A_LABEL, 2))
         );
         Assert.assertFalse(
-            "can sell C", new MemoryStore(this.map).canSell(this.citem)
+            "can sell B", new MemoryStore(map).canSell(new Item(B_LABEL, 1))
         );
     }
 
@@ -103,28 +72,30 @@ public final class MemoryStoreTest {
      */
     @Test
     public void testSell() {
-        final MemoryStore store = new MemoryStore(this.map);
-        store.sell(ImmutableList.of(this.aitem));
+        final ConcurrentHashMap<String, Integer> map =
+            new ConcurrentHashMap<>(1);
+        map.put(A_LABEL, 1);
+        final MemoryStore store = new MemoryStore(map);
+        store.sell(ImmutableList.of(new Item(B_LABEL, 1)));
         Assert.assertTrue(
-            "A not removed",
+            "removing not present B",
             Iterables.elementsEqual(
-                ImmutableList.of(this.bitem), store.items()
+                ImmutableList.of(new Item(A_LABEL, 1)), store.items()
             ));
-        store.sell(ImmutableList.of(this.aitem));
+        store.sell(ImmutableList.of(new Item(A_LABEL, 2)));
         Assert.assertTrue(
-            "A duplicated",
+            "removing more A than exist",
             Iterables.elementsEqual(
-                ImmutableList.of(this.bitem), store.items()
+                ImmutableList.of(new Item(A_LABEL, 1)), store.items()
             ));
-        store.sell(ImmutableList.of(this.citem));
+        store.sell(ImmutableList.of(new Item(A_LABEL, 1)));
         Assert.assertTrue(
-            "removing C",
-            Iterables.elementsEqual(
-                ImmutableList.of(this.bitem), store.items()
-            ));
-        store.sell(ImmutableList.of(this.bitem));
+            "not cleared",
+            Iterables.elementsEqual(ImmutableList.of(), store.items())
+        );
+        store.sell(ImmutableList.of(new Item(A_LABEL, 1)));
         Assert.assertTrue(
-            "not cleaned",
+            "removing though empty",
             Iterables.elementsEqual(ImmutableList.of(), store.items())
         );
         Assert.assertTrue("not empty", store.empty());

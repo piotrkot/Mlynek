@@ -23,7 +23,7 @@ public final class PathOrder {
     /**
      * Valid items.
      */
-    private final Iterable<Item> items;
+    private final transient Iterable<Item> items;
 
     /**
      * Class constructor.
@@ -35,7 +35,6 @@ public final class PathOrder {
             PathOrder.filterPositive(PathOrder.parse(PathOrder.split(orders)))
                 .entrySet(),
             new Function<Map.Entry<String, Integer>, Item>() {
-                @Nullable
                 @Override
                 public Item apply(final Map.Entry<String, Integer> item) {
                     return new Item(item.getKey(), item.getValue());
@@ -78,11 +77,13 @@ public final class PathOrder {
                 @Override
                 public Integer transformEntry(final String key,
                                               final String value) {
+                    int parsed;
                     try {
-                        return Integer.parseInt(value);
+                        parsed = Integer.parseInt(value);
                     } catch (final NumberFormatException ignore) {
-                        return 0;
+                        parsed = 0;
                     }
+                    return parsed;
                 }
             });
     }
