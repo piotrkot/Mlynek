@@ -133,6 +133,7 @@
                                 <exclude>findbugs:.*</exclude>
                                 <exclude>duplicatefinder:.*</exclude>
                                 <exclude>dependencies:.*</exclude>
+                                <exclude>jslint:.*</exclude>
                             </excludes>
                         </configuration>
                         <executions>
