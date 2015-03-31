@@ -5,12 +5,13 @@ package com.piotrkot.resources;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.piotrkot.core.Item;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
+import javax.ws.rs.core.MultivaluedMap;
 
 /**
  * Order as path parameters.
@@ -30,7 +31,7 @@ public final class PathOrder {
      *
      * @param orders Path orders.
      */
-    public PathOrder(final CharSequence orders) {
+    public PathOrder(final MultivaluedMap<String, String> orders) {
         this.items = Iterables.transform(
             PathOrder.filterPositive(PathOrder.parse(PathOrder.split(orders)))
                 .entrySet(),
@@ -52,14 +53,22 @@ public final class PathOrder {
     }
 
     /**
-     * Split order.
+     * Split multivalued map order into map order.
      *
-     * @param order Path params for order.
+     * @param order Multivalued path params for order.
      * @return Map of path param item name and path param item count pairs.
+     *  Duplicated and empty values are ignored.
      */
-    private static Map<String, String> split(final CharSequence order) {
-        return Splitter.on("&").omitEmptyStrings()
-            .withKeyValueSeparator("=").split(order);
+    private static Map<String, String> split(
+        final MultivaluedMap<String, String> order) {
+        final Map<String, String> map = Maps.newHashMap();
+        for (final MultivaluedMap.Entry<String, List<String>> entry
+            : order.entrySet()) {
+            if (entry.getValue().size() == 1) {
+                map.put(entry.getKey(), entry.getValue().get(0));
+            }
+        }
+        return map;
     }
 
     /**

@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Once started, application is listening on http://localhost:8090/shop for application requests"
 echo "There is some administration too on http://localhost:8444/"
 echo

@@ -5,7 +5,9 @@ package com.piotrkot.core;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.util.List;
 import java.util.Map;
 import lombok.Synchronized;
 
@@ -52,11 +54,14 @@ public final class MemoryStore {
      * Selling items which decreases the store.
      *
      * @param items Items to be bought.
+     * @return Items sold.
      */
     @Synchronized
-    public void sell(final Iterable<Item> items) {
+    public Iterable<Item> sell(final Iterable<Item> items) {
+        final List<Item> sold = Lists.newArrayList();
         for (final Item item : items) {
             if (this.canSell(item)) {
+                sold.add(item);
                 final Integer value = this.map.get(item.getName())
                     - item.getCount();
                 if (value == 0) {
@@ -69,6 +74,7 @@ public final class MemoryStore {
                 }
             }
         }
+        return sold;
     }
 
     /**
@@ -77,7 +83,6 @@ public final class MemoryStore {
      * @param item Item in question.
      * @return True If item can be sold. False, otherwise.
      */
-    @Synchronized
     public boolean canSell(final Item item) {
         return this.map.containsKey(item.getName())
             && this.map.get(item.getName()) >= item.getCount();

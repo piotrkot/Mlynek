@@ -138,7 +138,7 @@
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>compile</phase>
+                                <phase>test</phase>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>

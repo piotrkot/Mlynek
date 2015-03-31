@@ -3,11 +3,11 @@
  */
 package com.piotrkot;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Range;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import lombok.SneakyThrows;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 import org.junit.Before;
@@ -76,8 +76,8 @@ public final class WorkflowTest {
     @Test
     @SneakyThrows
     public void checkBuyPage() {
-        final HttpResponse response = Request.Get(
-            Joiner.on("").join(this.uri, "/A=10&B=3")
+        final HttpResponse response = Request.Post(this.uri).bodyForm(
+            Form.form().add("A", "10").add("B", "3").build()
         ).execute().returnResponse();
         final int status = response.getStatusLine().getStatusCode();
         Assert.assertTrue(

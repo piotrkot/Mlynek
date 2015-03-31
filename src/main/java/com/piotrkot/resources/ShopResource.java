@@ -8,11 +8,13 @@ import com.piotrkot.core.MemoryStore;
 import com.piotrkot.core.Order;
 import com.piotrkot.views.BuyView;
 import com.piotrkot.views.ShopView;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,15 +60,14 @@ public final class ShopResource {
      * @param ords Orders.
      * @return Buy view.
      */
-    @GET
-    @Path("/{orders}")
+    @POST
     @Timed
     @Synchronized
+    @Consumes("application/x-www-form-urlencoded")
     @Produces(MediaType.TEXT_HTML)
-    public BuyView buyView(@PathParam("orders") final String ords) {
+    public BuyView buyView(final MultivaluedMap<String, String> ords) {
         return new BuyView(
-            new Order(new PathOrder(ords), this.store)
-                .boughtItems()
+            new Order(new PathOrder(ords), this.store).buyItems()
         );
     }
 }

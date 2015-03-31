@@ -7,7 +7,6 @@ import com.piotrkot.core.MemoryStore;
 import com.piotrkot.health.AvailableItemsHealthCheck;
 import com.piotrkot.resources.ShopResource;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -39,10 +38,6 @@ public final class ShopApplication extends Application<ShopConfiguration> {
     @Override
     public void initialize(final Bootstrap<ShopConfiguration> bootstrap) {
         bootstrap.addBundle(new ViewBundle());
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/"));
-        bootstrap.addBundle(
-            new AssetsBundle("/assets/shop", "/shop/js", null, "s-js")
-        );
     }
 
     @Override
