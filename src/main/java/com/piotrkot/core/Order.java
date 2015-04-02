@@ -3,8 +3,6 @@
  */
 package com.piotrkot.core;
 
-import com.piotrkot.resources.PathOrder;
-
 /**
  * Order made.
  *
@@ -19,18 +17,18 @@ public final class Order {
     private final transient Iterable<Item> items;
 
     /**
-     * Store where order is made.
+     * Memory Store where order is made.
      */
-    private final transient MemoryStore store;
+    private final transient MemoryStore memory;
     /**
      * Class constructor.
      *
-     * @param ords Path orders.
-     * @param memory Memory.
+     * @param products Products to buy.
+     * @param store Store where products are bought from.
      */
-    public Order(final PathOrder ords, final MemoryStore memory) {
-        this.items = ords.validItems();
-        this.store = memory;
+    public Order(final Iterable<Item> products, final MemoryStore store) {
+        this.items = products;
+        this.memory = store;
     }
 
     /**
@@ -39,6 +37,6 @@ public final class Order {
      * @return Items representing made order.
      */
     public Iterable<Item> buyItems() {
-        return this.store.sell(this.items);
+        return this.memory.sell(this.items);
     }
 }

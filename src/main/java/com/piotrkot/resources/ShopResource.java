@@ -67,7 +67,7 @@ public final class ShopResource {
     @Produces(MediaType.TEXT_HTML)
     public BuyView buyView(final MultivaluedMap<String, String> ords) {
         return new BuyView(
-            new Order(new PathOrder(ords), this.store).buyItems()
+            new Order(new WebOrder(ords).validItems(), this.store).buyItems()
         );
     }
 }

@@ -14,33 +14,25 @@ import javax.annotation.Nullable;
 import javax.ws.rs.core.MultivaluedMap;
 
 /**
- * Order as path parameters.
+ * Web Order from web request.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class PathOrder {
+public final class WebOrder {
     /**
-     * Valid items.
+     * Orders as Multivalued Map.
      */
-    private final transient Iterable<Item> items;
+    private final transient MultivaluedMap<String, String> ords;
 
     /**
      * Class constructor.
      *
      * @param orders Path orders.
      */
-    public PathOrder(final MultivaluedMap<String, String> orders) {
-        this.items = Iterables.transform(
-            PathOrder.filterPositive(PathOrder.parse(PathOrder.split(orders)))
-                .entrySet(),
-            new Function<Map.Entry<String, Integer>, Item>() {
-                @Override
-                public Item apply(final Map.Entry<String, Integer> item) {
-                    return new Item(item.getKey(), item.getValue());
-                }
-            });
+    public WebOrder(final MultivaluedMap<String, String> orders) {
+        this.ords = orders;
     }
 
     /**
@@ -49,7 +41,16 @@ public final class PathOrder {
      * @return Iterable valid items.
      */
     public Iterable<Item> validItems() {
-        return this.items;
+        return Iterables.transform(
+            WebOrder.filterPositive(
+                WebOrder.parse(WebOrder.split(this.ords))
+            ).entrySet(),
+            new Function<Map.Entry<String, Integer>, Item>() {
+                @Override
+                public Item apply(final Map.Entry<String, Integer> item) {
+                    return new Item(item.getKey(), item.getValue());
+                }
+            });
     }
 
     /**

@@ -18,7 +18,7 @@ import org.junit.Test;
  * @version $Id$
  * @since 1.0
  */
-public final class PathOrderTest {
+public final class WebOrderTest {
     /**
      * Item name for A.
      */
@@ -37,7 +37,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "not empty",
             Iterables.elementsEqual(
-                ImmutableList.of(), new PathOrder(mmap).validItems()
+                ImmutableList.of(), new WebOrder(mmap).validItems()
             ));
     }
     /**
@@ -50,7 +50,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "not empty with &",
             Iterables.elementsEqual(
-                ImmutableList.of(), new PathOrder(mmap).validItems()
+                ImmutableList.of(), new WebOrder(mmap).validItems()
             ));
     }
 
@@ -65,7 +65,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "cannot read A",
             Iterables.elementsEqual(
-                ImmutableList.of(aitem), new PathOrder(mmap).validItems()
+                ImmutableList.of(aitem), new WebOrder(mmap).validItems()
             ));
     }
 
@@ -79,7 +79,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "can read key duplicates",
             Iterables.elementsEqual(
-                ImmutableList.of(), new PathOrder(mmap).validItems()
+                ImmutableList.of(), new WebOrder(mmap).validItems()
             ));
     }
 
@@ -95,7 +95,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "cannot read A with &",
             Iterables.elementsEqual(
-                ImmutableList.of(aitem), new PathOrder(mmap).validItems()
+                ImmutableList.of(aitem), new WebOrder(mmap).validItems()
             ));
     }
 
@@ -112,7 +112,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "cannot read A and B",
             Iterables.elementsEqual(
-                ImmutableList.of(aitem, bitem), new PathOrder(mmap).validItems()
+                ImmutableList.of(aitem, bitem), new WebOrder(mmap).validItems()
             ));
     }
 
@@ -133,7 +133,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "can read non-digits",
             Iterables.elementsEqual(
-                ImmutableList.of(aitem, bitem), new PathOrder(mmap).validItems()
+                ImmutableList.of(aitem, bitem), new WebOrder(mmap).validItems()
             ));
     }
     /**
@@ -150,7 +150,7 @@ public final class PathOrderTest {
         Assert.assertTrue(
             "can read negative numbers",
             Iterables.elementsEqual(
-                ImmutableList.of(aitem), new PathOrder(mmap).validItems()
+                ImmutableList.of(aitem), new WebOrder(mmap).validItems()
             ));
     }
 }
