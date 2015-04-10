@@ -18,82 +18,79 @@ import org.junit.Test;
  */
 public final class MemoryStoreTest {
     /**
-     * Item name for A.
-     */
-    private static final String A_LABEL = "A";
-    /**
-     * Item name for B.
-     */
-    private static final String B_LABEL = "B";
-
-    /**
-     * Test items.
+     * Can list items.
      */
     @Test
-    public void testItems() {
+    public void listingItems() {
         final ConcurrentHashMap<String, Integer> map =
             new ConcurrentHashMap<>(1);
-        map.put(A_LABEL, 1);
-        map.put(B_LABEL, 2);
+        final String itema = "A";
+        final String itemb = "B";
+        map.put(itema, 1);
+        map.put(itemb, 2);
         Assert.assertTrue(
             "wrong elements",
             Iterables.elementsEqual(
-                ImmutableList.of(new Item(A_LABEL, 1), new Item(B_LABEL, 2)),
+                ImmutableList.of(new Item(itema, 1), new Item(itemb, 2)),
                 new MemoryStore(map).items()
             ));
     }
 
     /**
-     * Test sell possible.
+     * Can check selling possibility.
      */
     @Test
-    public void testCanSell() {
+    public void checkingSellingPossibility() {
         final ConcurrentHashMap<String, Integer> map =
             new ConcurrentHashMap<>(1);
-        map.put(A_LABEL, 1);
+        final String label = "A_item";
+        map.put(label, 1);
         Assert.assertTrue(
-            "cannot sell A", new MemoryStore(map).canSell(new Item(A_LABEL, 1))
+            "cannot sell item", new MemoryStore(map).canSell(new Item(label, 1))
         );
         Assert.assertTrue(
-            "cannot sell no A",
-            new MemoryStore(map).canSell(new Item(A_LABEL, 0))
+            "cannot sell no item",
+            new MemoryStore(map).canSell(new Item(label, 0))
         );
         Assert.assertFalse(
             "can sell more A than exist",
-            new MemoryStore(map).canSell(new Item(A_LABEL, 2))
+            new MemoryStore(map).canSell(new Item(label, 2))
         );
         Assert.assertFalse(
-            "can sell B", new MemoryStore(map).canSell(new Item(B_LABEL, 1))
+            "can sell not existing",
+            new MemoryStore(map).canSell(new Item("not exist", 1))
         );
     }
 
     /**
-     * Test sell.
+     * Can sell items.
      */
     @Test
-    public void testSell() {
+    public void sellingItems() {
         final ConcurrentHashMap<String, Integer> map =
             new ConcurrentHashMap<>(1);
-        map.put(A_LABEL, 1);
+        final String itema = "AITEM";
+        final String itemb = "BITEM";
+        map.put(itema, 1);
         final MemoryStore store = new MemoryStore(map);
-        store.sell(ImmutableList.of(new Item(B_LABEL, 1)));
+        store.sell(ImmutableList.of(new Item(itemb, 1)));
         Assert.assertTrue(
             "removing not present B",
             Iterables.elementsEqual(
-                ImmutableList.of(new Item(A_LABEL, 1)), store.items()
+                ImmutableList.of(new Item(itema, 1)), store.items()
             ));
-        store.sell(ImmutableList.of(new Item(A_LABEL, 2)));
+        store.sell(ImmutableList.of(new Item(itema, 2)));
         Assert.assertTrue(
             "removing more A than exist",
             Iterables.elementsEqual(
-                ImmutableList.of(new Item(A_LABEL, 1)), store.items()
+                ImmutableList.of(new Item(itema, 1)), store.items()
             ));
-        store.sell(ImmutableList.of(new Item(A_LABEL, 1)));
+        store.sell(ImmutableList.of(new Item(itema, 1)));
         Assert.assertTrue(
             "not cleared",
             Iterables.elementsEqual(ImmutableList.of(), store.items())
         );
-        store.sell(ImmutableList.of(new Item(A_LABEL, 1)));
+        store.sell(ImmutableList.of(new Item(itema, 1)));
         Assert.assertTrue(
             "removing though empty",
             Iterables.elementsEqual(ImmutableList.of(), store.items())

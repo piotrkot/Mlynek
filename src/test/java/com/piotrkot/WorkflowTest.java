@@ -55,11 +55,11 @@ public final class WorkflowTest {
     }
 
     /**
-     * Check of main page.
+     * Can display main page.
      */
     @Test
     @SneakyThrows
-    public void checkShopPage() {
+    public void displayedShopPage() {
         final HttpResponse response = Request.Get(this.uri).execute()
             .returnResponse();
         final int status = response.getStatusLine().getStatusCode();
@@ -71,11 +71,11 @@ public final class WorkflowTest {
     }
 
     /**
-     * Check of buy page.
+     * Can display buy page.
      */
     @Test
     @SneakyThrows
-    public void checkBuyPage() {
+    public void displayedBuyPage() {
         final HttpResponse response = Request.Post(this.uri).bodyForm(
             Form.form().add("A", "10").add("B", "3").build()
         ).execute().returnResponse();
